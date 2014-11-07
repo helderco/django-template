@@ -1,7 +1,0 @@
-Django
-psycopg2
-Unipath
-six
-django-dotenv
-django-getenv
-dj-database-url

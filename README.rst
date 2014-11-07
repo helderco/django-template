@@ -1,13 +1,14 @@
+Cookiecutter template for my Django 1.7 projects
+================================================
 
-::
+Requirements::
 
-    cd source/theme
-    bundle install
-    bower install
-    cd ../..
+    $ pip install cookiecutter
 
-    foreman start
+Here's how you start a new project::
 
-.. code-block:: bash
+    $ cookiecutter gh:helderco/django-template
 
-    alias start-django="django-admin.py startproject --template=https://github.com/helderco/django-template.git -e py,ruby-gemset,json,env"
+Run that in the folder you want your new project and just answer the questions.
+
+That's it folks!

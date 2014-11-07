@@ -71,23 +71,9 @@ WSGI_APPLICATION = 'confs.wsgi.application'
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-    },
-}
-
-if os.environ.has_key('DATABASE_URL'):
     # URL schema: https://github.com/kennethreitz/dj-database-url#url-schema
-    DATABASES['default'] = dj_database_url.config()
-
-elif os.environ.has_key('DB_NAME'):
-    DATABASES['default'].update({
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASS'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
-    })
+    'default': dj_database_url.config(),
+}
 
 
 # Internationalization

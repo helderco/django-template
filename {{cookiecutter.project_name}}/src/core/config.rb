@@ -15,12 +15,15 @@ end
 css_dir = "static/css"
 sass_dir = "sass"
 images_dir = "static/img"
+fonts_dir = "static/fonts"
 generated_images_dir = images_dir + "/generated"
 javascripts_dir = "static/js"
 
 # Require any additional compass plugins installed on your system.
 require 'rgbapng'
 require 'toolkit'
+require 'breakpoint'
+require 'singularitygs'
 require 'sass-globbing'
 
 # You can select your preferred output style here (can be overridden via the command line):
@@ -35,3 +38,8 @@ line_comments = environment == :development
 
 # Add the 'sass' directory itself as an import path to ease imports.
 add_import_path 'sass'
+
+{% if cookiecutter.foundation -%}
+# Add Foundation
+add_import_path "static/libs/foundation/scss"
+{%- endif %}

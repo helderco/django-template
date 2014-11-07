@@ -1,3 +1,4 @@
 /public/static/*
 /public/media/*
-/src/.env
+/core/static/libs/*
+.sass-cache

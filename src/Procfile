@@ -1,3 +1,0 @@
-db: postgres -D /usr/local/var/postgres
-sass: compass watch core
-web: python manage.py runserver 0.0.0.0:8000
