@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import random
 import string
-import shutil
+import os
 
 # Generate new SECRET_KEY
 with open('./src/.env', 'a') as f:
@@ -19,5 +19,5 @@ with open('./.gitignore', 'a') as f:
 # We want cookiecutter to create media and static but not
 # including the .gitignore in the project or else we'll get
 # modified status from git when/if these are cleaned.
-shutil.rmtree('./public/media/.gitignore')
-shutil.rmtree('./public/static/.gitignore')
+os.remove('./public/media/.gitignore')
+os.remove('./public/static/.gitignore')
