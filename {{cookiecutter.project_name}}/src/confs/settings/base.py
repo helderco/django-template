@@ -29,24 +29,60 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
+
 ADMINS = (
-    # ('Your Name', '{{ cookiecutter.site_meail }}'),
+    ('Webmaster', '{{ cookiecutter.site_meail|default('webmaster@localhost') }}'),
 )
-
-MANAGERS = ADMINS
-
-APPEND_SLASH = True
 
 
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
+    # Core
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sitemaps',
     'django.contrib.staticfiles',
+    {%- if cookiecutter.django_cms == 'yes' %}
+
+    # Admin
+    'djangocms_admin_style',
+    'django.contrib.admin',
+    'django.contrib.redirects',
+
+    # Core django-cms (do not sort this group)
+    'django.contrib.sites',
+    'djangocms_text_ckeditor',  # note this needs to be before the 'cms' entry
+    'cms',  # django CMS itself
+    'treebeard',  # utilities for implementing a tree
+    'menus',  # helper for model independent hierarchical website navigation
+    'sekizai',  # for javascript and css management
+
+    # Other third party
+    'ckeditor',
+    'filer',
+    'easy_thumbnails',
+
+    # Plugins
+    'cmsplugin_filer_image',
+    'cmsplugin_filer_file',
+    'cmsplugin_filer_folder',
+    'cmsplugin_filer_teaser',
+    'cmsplugin_filer_utils',
+    'cmsplugin_filer_video',
+    # 'djangocms_flash',
+    # 'djangocms_googlemap',
+    # 'djangocms_inherit',
+    # 'djangocms_link',
+    {%- else %}
+    'django.contrib.admin',
+    {%- endif %}
+
+    # Custom apps
+    # 'core',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,26 +94,47 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    {%- if cookiecutter.django_cms == 'yes' %}
+    'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.page.CurrentPageMiddleware',
+    'cms.middleware.toolbar.ToolbarMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
+    {%- endif %}
 )
 
-ROOT_URLCONF = 'confs.urls'
+
+# Templates
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR.child('core', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.request',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                {%- if cookiecutter.django_cms == 'yes' %}
+                'sekizai.context_processors.sekizai',
+                'cms.context_processors.cms_settings',
+                {%- endif %}
             ],
         },
     },
 ]
 
+
+# Application definition
+
+ROOT_URLCONF = 'confs.urls'
 WSGI_APPLICATION = 'confs.wsgi.application'
 
 
@@ -118,23 +175,63 @@ MEDIA_ROOT = BASE_DIR.parent.child('public', 'media')
 MEDIA_URL = '/media/'
 
 
-# Templates
+{% if cookiecutter.django_cms == 'yes' -%}
+# Django CMS
 
-TEMPLATE_DIRS = (
-    BASE_DIR.child('core', 'templates'),
+LANGUAGES = (
+    ## Customize this
+    ('pt', gettext('pt')),
 )
+
+CMS_TEMPLATES = (
+    ## Customize this
+    ('base.html', 'Default site page'),
+)
+
+MIGRATION_MODULES = {
+    'djangocms_column': 'djangocms_column.migrations_django',
+    'djangocms_flash': 'djangocms_flash.migrations_django',
+    'djangocms_googlemap': 'djangocms_googlemap.migrations_django',
+    'djangocms_inherit': 'djangocms_inherit.migrations_django',
+    'djangocms_link': 'djangocms_link.migrations_django',
+    'djangocms_style': 'djangocms_style.migrations_django',
+    'cmsplugin_filer_image': 'cmsplugin_filer_image.migrations_django',
+    'cmsplugin_filer_file': 'cmsplugin_filer_file.migrations_django',
+    'cmsplugin_filer_folder': 'cmsplugin_filer_folder.migrations_django',
+    'cmsplugin_filer_teaser': 'cmsplugin_filer_teaser.migrations_django',
+    'cmsplugin_filer_utils': 'cmsplugin_filer_utils.migrations_django',
+    'cmsplugin_filer_video': 'cmsplugin_filer_video.migrations_django',
+}
+
+
+# Thumbnails
+
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters',
+)
+
+
+# CkEditor
+
+CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
+
+
+{% endif -%}
 
 
 # Email
 
-if 'EMAIL_HOST_USER' in os.environ:
-    EMAIL_USE_TLS = env('EMAIL_USE_TLS', True)
-    EMAIL_HOST = env('EMAIL_HOST', 'smtp.gmail.com')
-    EMAIL_PORT = env('EMAIL_PORT', 587)
-    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', '')
-    DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
-
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', True)
+EMAIL_HOST = env('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = env('EMAIL_PORT', 587)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+{% if cookiecutter.site_email %}
+DEFAULT_FROM_EMAIL = '{{ cookiecutter.site_email }}'
+{% endif %}
 
 # Logging
 
@@ -154,7 +251,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.NullHandler',
         },
-        'console':{
+        'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'

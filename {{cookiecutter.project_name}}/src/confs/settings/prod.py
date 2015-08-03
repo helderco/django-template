@@ -17,7 +17,7 @@ try:
     import raven.contrib.django.raven_compat
     INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
 
-    if os.environ.has_key('SENTRY_DSN'):
+    if 'SENTRY_DSN' in os.environ:
         RAVEN_CONFIG = {
             'dsn': os.environ['SENTRY_DSN']
         }

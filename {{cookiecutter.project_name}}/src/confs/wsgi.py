@@ -5,11 +5,14 @@ from unipath import Path
 BASE_DIR = Path(__file__).absolute().ancestor(2)
 
 # Load environment in production (without a container).
-# In this case, place .env next to manage.py.
-env_file = BASE_DIR.child('.env')
-if env_file.exists():
+# If that's the case, place .env next to manage.py.
+try:
     import dotenv
-    dotenv.read_dotenv(env_file)
+    env_file = BASE_DIR.child('.env')
+    if env_file.exists():
+        dotenv.read_dotenv(env_file)
+except ImportError:
+    pass
 
 # Get WSGI handler
 from django.core.wsgi import get_wsgi_application

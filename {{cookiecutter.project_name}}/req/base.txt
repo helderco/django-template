@@ -1,3 +1,6 @@
+{% if cookiecutter.django_cms == 'yes' -%}
+django-cms>=3.0
+{% endif -%}
 Django>=1.8,<1.9
 {% if cookiecutter.database_engine == 'mysql' -%}
 MySQL-python
@@ -5,6 +8,25 @@ MySQL-python
 psycopg2
 {%- endif %}
 Unipath
-six
 django-getenv
 dj-database-url
+
+{%- if cookiecutter.django_cms == 'yes' %}
+
+# These dependencies are brought in by django CMS, but if you want to
+# lock-in their version, specify them
+django-treebeard
+django-sekizai
+django-classy-tags
+djangocms-admin-style
+html5lib==0.999
+six
+
+# Optional, recommended packages
+Pillow>=2
+django-filer
+cmsplugin-filer
+django-ckeditor
+djangocms-text-ckeditor
+easy-thumbnails
+{%- endif %}

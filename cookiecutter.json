@@ -2,5 +2,6 @@
     "project_name": "django",
     "database_engine": "mysql",
     "foundation": "no",
+    "django_cms": "no",
     "site_email": ""
 }
