@@ -13,12 +13,13 @@ uwsgi:
     - 3000
   links:
     - db
-    - mail
     {% if cookiecutter.redis == 'yes' -%}
     - redis
-  {% endif -%}
+    {% endif -%}
+    - mail
   volumes:
     - .:/usr/src/app
+  working_dir: /usr/src/app/src
   environment:
     - DJANGO_SETTINGS_MODULE=confs.settings.prod
   env_file:
@@ -34,10 +35,10 @@ manage:
     - 80
   links:
     - db
-    - mail
     {% if cookiecutter.redis == 'yes' -%}
     - redis
-  {% endif -%}
+    {% endif -%}
+    - mail
   volumes_from:
     - uwsgi
   working_dir: /usr/src/app/src
