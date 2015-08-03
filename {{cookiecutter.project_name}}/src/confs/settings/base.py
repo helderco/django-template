@@ -233,6 +233,28 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = '{{ cookiecutter.site_email }}'
 {% endif %}
 
+{% if cookiecutter.redis == 'yes' -%}
+# Redis caching
+
+if 'REDIS_BACKEND' in os.environ:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": env('REDIS_BACKEND'),
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "IGNORE_EXCEPTIONS": True,
+            }
+        }
+    }
+
+    SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+    SESSION_CACHE_ALIAS = "default"
+
+
+{% endif -%}
+
+
 # Logging
 
 LOGGING = {

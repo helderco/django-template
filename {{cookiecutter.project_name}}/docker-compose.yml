@@ -14,6 +14,9 @@ uwsgi:
   links:
     - db
     - mail
+    {% if cookiecutter.redis == 'yes' -%}
+    - redis
+  {% endif -%}
   volumes:
     - .:/usr/src/app
   environment:
@@ -32,6 +35,9 @@ manage:
   links:
     - db
     - mail
+    {% if cookiecutter.redis == 'yes' -%}
+    - redis
+  {% endif -%}
   volumes_from:
     - uwsgi
   working_dir: /usr/src/app/src
@@ -68,3 +74,9 @@ mail:
   image: helder/mailcatcher
   ports:
     - 80
+
+{%- if cookiecutter.redis == 'yes' %}
+
+redis:
+  image: redis
+{%- endif %}

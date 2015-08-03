@@ -11,6 +11,10 @@ Unipath
 django-getenv
 dj-database-url
 
+{%- if cookiecutter.redis == 'yes' %}
+django-redis
+{%- endif %}
+
 {%- if cookiecutter.django_cms == 'yes' %}
 
 # These dependencies are brought in by django CMS, but if you want to
