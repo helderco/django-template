@@ -221,18 +221,6 @@ CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
 
 {% endif -%}
 
-
-# Email
-
-EMAIL_USE_TLS = env('EMAIL_USE_TLS', True)
-EMAIL_HOST = env('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = env('EMAIL_PORT', 587)
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-{% if cookiecutter.site_email %}
-DEFAULT_FROM_EMAIL = '{{ cookiecutter.site_email }}'
-{% endif %}
-
 {% if cookiecutter.redis == 'yes' -%}
 # Redis caching
 
@@ -254,46 +242,13 @@ if 'REDIS_BACKEND' in os.environ:
 
 {% endif -%}
 
+# Email
 
-# Logging
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-    },
-    'handlers': {
-        'null': {
-            'level': 'DEBUG',
-            'class': 'logging.NullHandler',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple'
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'filters': [],
-        }
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['null'],
-            'propagate': True,
-            'level': 'INFO',
-        },
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-    }
-}
+{% if cookiecutter.site_email -%}
+DEFAULT_FROM_EMAIL = '{{ cookiecutter.site_email }}'
+{% endif -%}
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', True)
+EMAIL_HOST = env('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = env('EMAIL_PORT', 587)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
