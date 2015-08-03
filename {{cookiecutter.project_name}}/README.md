@@ -1,21 +1,14 @@
-# What's in {{ cookiecutter.project_name }}?
+# {{ cookiecutter.project_name }}
 
-* Django 1.7
-* bower: for javascript dependencies;
-* bundler: for ruby dependencies, i.e, compass/sass, foreman (use RVM);
-* compass: for compiling CSS;
-* foreman: for running several processes in one terminal window.
+## Requirements
 
-Tweak `settings/base.py`, then on first run:
+Docker Compose!
 
-    $ pip install -r req/dev.txt
-    $ cd src/core
-    $ bundle install
-    $ bower install
-    $ cd ..
-    $ ./manage.py check
-    $ ./manage.py migrate
+## Usage
 
-After that
-
-    $ foreman start
+    $ docker-compose up -d
+    $ docker run -it --rm -u node -v "$PWD/src:/data" helder/node bower install
+    $ docker-compose run --rm manage check
+    $ docker-compose run --rm manage migrate
+    $ docker-compose run --rm manage createsuperuser
+    $ docker-compose run --rm manage collectstatic

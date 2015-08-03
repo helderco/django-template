@@ -1,7 +1,0 @@
-{% if cookiecutter.database_engine == 'mysql' -%}
-db: mysqld
-{%- elif cookiecutter.database_engine == 'postgres' -%}
-db: postgres -D /usr/local/var/postgres
-{%- endif %}
-sass: compass watch core
-web: python manage.py runserver 0.0.0.0:8000

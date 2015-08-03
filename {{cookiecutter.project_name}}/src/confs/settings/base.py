@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+"""
+Django settings.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/1.8/topics/settings/
+
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/1.8/ref/settings/
+"""
+
 import os
 
 import dj_database_url
@@ -17,14 +27,10 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
-TEMPLATE_DEBUG = DEBUG
-
 ALLOWED_HOSTS = []
 
-SITE_ID = 1
-
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    # ('Your Name', '{{ cookiecutter.site_meail }}'),
 )
 
 MANAGERS = ADMINS
@@ -51,24 +57,32 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
+    'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'confs.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 WSGI_APPLICATION = 'confs.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     # URL schema: https://github.com/kennethreitz/dj-database-url#url-schema
@@ -77,7 +91,7 @@ DATABASES = {
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
+# https://docs.djangoproject.com/en/1.8/topics/i18n/
 
 LANGUAGE_CODE = 'pt'
 
@@ -91,16 +105,16 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
+# https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATICFILES_DIRS = (
     BASE_DIR.child('core', 'static'),
 )
 
-STATIC_ROOT = BASE_DIR.parent.child('static')
+STATIC_ROOT = BASE_DIR.parent.child('public', 'static')
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = BASE_DIR.parent.child('media')
+MEDIA_ROOT = BASE_DIR.parent.child('public', 'media')
 MEDIA_URL = '/media/'
 
 
@@ -113,12 +127,12 @@ TEMPLATE_DIRS = (
 
 # Email
 
-if os.environ.has_key('EMAIL_HOST_USER'):
-    EMAIL_USE_TLS = True
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
+if 'EMAIL_HOST_USER' in os.environ:
+    EMAIL_USE_TLS = env('EMAIL_USE_TLS', True)
+    EMAIL_HOST = env('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = env('EMAIL_PORT', 587)
     EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', '')
     DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 

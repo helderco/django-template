@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-import random
-import string
 import os
 
 # Generate new SECRET_KEY
-with open('./src/.env', 'a') as f:
+with open('./.env', 'a') as f:
+    import random
+    import string
     allowed_chars = string.digits + string.letters + string.punctuation
     secret_key = ''.join([random.SystemRandom().choice(allowed_chars) for i in range(50)])
     print('SECRET_KEY=' + secret_key, file=f)

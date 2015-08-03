@@ -39,7 +39,8 @@ line_comments = environment == :development
 # Add the 'sass' directory itself as an import path to ease imports.
 add_import_path 'sass'
 
-{% if cookiecutter.foundation -%}
+{%- if cookiecutter.foundation == 'yes' %}
+
 # Add Foundation
 add_import_path "static/libs/foundation/scss"
 {%- endif %}

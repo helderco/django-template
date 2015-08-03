@@ -1,9 +1,6 @@
 {
     "project_name": "django",
-    "environment": "dev",
     "database_engine": "mysql",
-    "database_user": "root",
-    "database_password": "",
-    "database_host": "",
-    "database_port": ""
+    "foundation": "no",
+    "site_email": ""
 }

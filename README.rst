@@ -1,14 +1,26 @@
-Cookiecutter template for my Django 1.7 projects
-================================================
+Template for my Django 1.8 projects
+===================================
 
-Requirements::
+Run cookiecutter in the folder you want your new project and just answer the questions.
+
+
+With Docker
+------------
+
+First time setup::
+
+    alias django-create='docker run -it --rm -v "$PWD:/data" helder/cookiecutter'
+
+Usage:
+
+    $ django-create
+
+
+Without Docker
+--------------
 
     $ pip install cookiecutter
-
-Here's how you start a new project::
-
     $ cookiecutter gh:helderco/django-template
 
-Run that in the folder you want your new project and just answer the questions.
 
 That's it folks!

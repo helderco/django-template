@@ -1,0 +1,70 @@
+web:
+  image: helder/nginx
+  ports:
+    - 80
+  links:
+    - "uwsgi:django_app"
+  volumes_from:
+    - uwsgi
+
+uwsgi:
+  build: .
+  ports:
+    - 3000
+  links:
+    - db
+    - mail
+  volumes:
+    - .:/usr/src/app
+  environment:
+    - DJANGO_SETTINGS_MODULE=confs.settings.prod
+  env_file:
+    - .env
+
+manage:
+  build: .
+  entrypoint:
+    - python
+    - manage.py
+  command: runserver 0.0.0.0:80
+  ports:
+    - 80
+  links:
+    - db
+    - mail
+  volumes_from:
+    - uwsgi
+  working_dir: /usr/src/app/src
+  environment:
+    - DJANGO_SETTINGS_MODULE=confs.settings.dev
+  env_file:
+    - .env
+
+{% if cookiecutter.database_engine == 'mysql' -%}
+db:
+  image: helder/mysql
+  ports:
+    - 3306
+  environment:
+    - MYSQL_DATABASE={{ cookiecutter.project_name }}
+    - MYSQL_ROOT_PASSWORD=root
+{%- elif cookiecutter.database_engine == 'postgres' -%}
+db:
+  image: postgres:9.4
+  ports:
+    - 5432
+  environment:
+    - POSTGRES_PASSWORD=postgres
+{%- endif %}
+
+compass:
+  build: src/core
+  working_dir: /usr/src/app/src/core
+  command: compass watch
+  volumes_from:
+    - manage
+
+mail:
+  image: helder/mailcatcher
+  ports:
+    - 80

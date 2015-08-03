@@ -1,9 +1,11 @@
 {
   "name": "{{ cookiecutter.project_name }}",
-  "version": "0.1.0",
   "private": "true",
   "dependencies": {
     "jquery": "*",
+    {% if cookiecutter.foundation == 'yes' -%}
+    "foundation": "*",
+    {% endif -%}
     "modernizr": "*"
   }
 }
