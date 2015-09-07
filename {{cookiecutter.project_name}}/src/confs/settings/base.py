@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 SITE_ID = 1
 
 ADMINS = (
-    ('Webmaster', '{{ cookiecutter.site_meail|default('webmaster@localhost') }}'),
+    ('Webmaster', '{{ cookiecutter.site_email|default('webmaster@localhost') }}'),
 )
 
 
