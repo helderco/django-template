@@ -19,6 +19,7 @@ uwsgi:
     - mail
   volumes:
     - .:/usr/src/app
+    - /usr/local/lib/python2.7/site-packages
   working_dir: /usr/src/app/src
   environment:
     - DJANGO_SETTINGS_MODULE=confs.settings.prod
@@ -27,6 +28,7 @@ uwsgi:
 
 manage:
   build: .
+  dockerfile: Dockerfile.dev
   entrypoint:
     - python
     - manage.py
@@ -41,6 +43,8 @@ manage:
     - mail
   volumes_from:
     - uwsgi
+  volumes:
+    - /usr/local/lib/python2.7/site-packages
   working_dir: /usr/src/app/src
   environment:
     - DJANGO_SETTINGS_MODULE=confs.settings.dev
@@ -67,7 +71,7 @@ db:
 compass:
   build: src/core
   working_dir: /usr/src/app/src/core
-  command: compass watch
+  command: compass watch --poll
   volumes_from:
     - manage
 
