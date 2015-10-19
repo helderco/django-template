@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# Load environment variables
 from unipath import Path
-BASE_DIR = Path(__file__).absolute().ancestor(2)
-
-# Load environment in production (without a container).
-# If that's the case, place .env next to manage.py.
+BASE_DIR = Path(__file__).absolute().ancestor(3)
 try:
     import dotenv
     env_file = BASE_DIR.child('.env')
