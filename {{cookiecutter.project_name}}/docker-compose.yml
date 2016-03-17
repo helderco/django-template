@@ -2,10 +2,11 @@ web:
   image: helder/nginx
   ports:
     - 80
-  links:
-    - "uwsgi:django_app"
   volumes_from:
     - uwsgi
+  environment:
+    - CONF_APP=django
+    - CONF_UPSTREAM=uwsgi:9000
 
 uwsgi:
   build: .
