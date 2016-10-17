@@ -1,0 +1,6 @@
+// Add your variables, mixins, functions, etc...
+{%- if cookiecutter.foundation == 'yes' %}
+// copy the foundation settings to this location and edit
+@import 'library/foundation/settings';
+@import 'foundation';
+{% endif -%}

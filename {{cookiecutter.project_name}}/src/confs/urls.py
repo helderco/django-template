@@ -23,4 +23,9 @@ urlpatterns = [
 
 # This is only needed when using runserver.
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    from django.views import defaults
+    urlpatterns = [
+      url(r'^500/$', defaults.server_error),
+      url(r'^403/$', defaults.permission_denied),
+      url(r'^404/$', defaults.page_not_found),
+    ] + urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,8 @@
+{% if cookiecutter.foundation == 'yes' -%}
+@import 'library';
+@import 'foundation';
+
+@include foundation-global-styles;
+@include foundation-typography;
+@include foundation-forms;
+{%- endif %}

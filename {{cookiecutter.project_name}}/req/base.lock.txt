@@ -1,0 +1,2 @@
+# All requirements with the specific version of packages so that all environments have the same version.
+# In development, after a `pip install -r base.txt` fill this file with `pip freeze > base.lock.txt`.

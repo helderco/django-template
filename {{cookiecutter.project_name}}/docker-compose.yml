@@ -1,86 +1,89 @@
-web:
-  image: helder/nginx
-  ports:
-    - 80
-  volumes_from:
-    - uwsgi
-  environment:
-    - CONF_APP=django
-    - CONF_UPSTREAM=uwsgi:9000
+version: '2'
+services:
+  web:
+    image: helder/nginx
+    ports:
+      - 80
+    volumes_from:
+      - uwsgi
+    environment:
+      - CONF_APP=django
+      - CONF_UPSTREAM=uwsgi:9000
 
-uwsgi:
-  build: .
-  ports:
-    - 3000
-  links:
-    - db
-    {% if cookiecutter.redis == 'yes' -%}
-    - redis
-    {% endif -%}
-    - mail
-  volumes:
-    - .:/usr/src/app
-    - /usr/local/lib/python2.7/site-packages
-  working_dir: /usr/src/app/src
-  environment:
-    - DJANGO_SETTINGS_MODULE=confs.settings.prod
+  uwsgi:
+    build: .
+    depends_on:
+      - db
+      {% if cookiecutter.redis == 'yes' -%}
+      - redis
+      {% endif -%}
+      - mail
+    volumes:
+      - ./:/usr/src/app
+      - prod:/usr/local/lib/python2.7/site-packages
+    working_dir: /usr/src/app/src
+    environment:
+      - DJANGO_SETTINGS_MODULE=confs.settings.prod
 
-manage:
-  build: .
-  dockerfile: Dockerfile.dev
-  entrypoint:
-    - python
-    - manage.py
-  command: runserver 0.0.0.0:80
-  ports:
-    - 80
-  links:
-    - db
-    {% if cookiecutter.redis == 'yes' -%}
-    - redis
-    {% endif -%}
-    - mail
-  volumes_from:
-    - uwsgi
-  volumes:
-    - /usr/local/lib/python2.7/site-packages
-  working_dir: /usr/src/app/src
-  environment:
-    - DJANGO_SETTINGS_MODULE=confs.settings.dev
-  env_file:
-    - .env
+  manage:
+    build: .
+    entrypoint:
+      - python
+      - manage.py
+    command: runserver 0.0.0.0:80
+    ports:
+      - 80
+    links:
+      - db
+      {% if cookiecutter.redis == 'yes' -%}
+      - redis
+      {% endif -%}
+      - mail
+    volumes:
+      - ./:/usr/src/app
+      - dev:/usr/local/lib/python2.7/site-packages
+    working_dir: /usr/src/app/src
+    environment:
+      - DJANGO_SETTINGS_MODULE=confs.settings.dev
+    env_file:
+      - .env
 
-{% if cookiecutter.database_engine == 'mysql' -%}
-db:
-  image: helder/mysql
-  ports:
-    - 3306
-  environment:
-    - MYSQL_DATABASE={{ cookiecutter.project_name }}
-    - MYSQL_ROOT_PASSWORD=root
-{%- elif cookiecutter.database_engine == 'postgres' -%}
-db:
-  image: postgres:9.4
-  ports:
-    - 5432
-  environment:
-    - POSTGRES_PASSWORD=postgres
-{%- endif %}
+  {% if cookiecutter.database_engine == 'mysql' -%}
+  db:
+    image: helder/mysql
+    ports:
+      - 3306
+    environment:
+      - MYSQL_DATABASE={{ cookiecutter.project_name }}
+      - MYSQL_ROOT_PASSWORD=root
+  {%- elif cookiecutter.database_engine == 'postgres' -%}
+  db:
+    image: postgres:9.4
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+  {%- endif %}
 
-compass:
-  build: src/core
-  working_dir: /usr/src/app/src/core
-  command: compass watch --poll
-  volumes_from:
-    - manage
+  node:
+    image: helder/node
+    command: gosu node /bin/true
+    volumes:
+      - ./:/data
 
-mail:
-  image: helder/mailcatcher
-  ports:
-    - 80
+  mail:
+    image: helder/mailcatcher
+    ports:
+      - 80
 
-{%- if cookiecutter.redis == 'yes' %}
+  {%- if cookiecutter.redis == 'yes' %}
 
-redis:
-  image: redis
-{%- endif %}
+  redis:
+    image: redis
+  {%- endif %}
+
+volumes:
+  dev:
+    driver: local
+  prod:
+    driver: local

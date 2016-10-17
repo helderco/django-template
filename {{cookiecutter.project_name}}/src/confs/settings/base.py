@@ -108,9 +108,7 @@ MIDDLEWARE_CLASSES = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR.child('core', 'templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -189,18 +187,18 @@ CMS_TEMPLATES = (
 )
 
 MIGRATION_MODULES = {
-    'djangocms_column': 'djangocms_column.migrations_django',
-    'djangocms_flash': 'djangocms_flash.migrations_django',
-    'djangocms_googlemap': 'djangocms_googlemap.migrations_django',
-    'djangocms_inherit': 'djangocms_inherit.migrations_django',
-    'djangocms_link': 'djangocms_link.migrations_django',
-    'djangocms_style': 'djangocms_style.migrations_django',
     'cmsplugin_filer_image': 'cmsplugin_filer_image.migrations_django',
     'cmsplugin_filer_file': 'cmsplugin_filer_file.migrations_django',
     'cmsplugin_filer_folder': 'cmsplugin_filer_folder.migrations_django',
     'cmsplugin_filer_teaser': 'cmsplugin_filer_teaser.migrations_django',
     'cmsplugin_filer_utils': 'cmsplugin_filer_utils.migrations_django',
     'cmsplugin_filer_video': 'cmsplugin_filer_video.migrations_django',
+    # 'djangocms_column': 'djangocms_column.migrations_django',
+    # 'djangocms_flash': 'djangocms_flash.migrations_django',
+    # 'djangocms_googlemap': 'djangocms_googlemap.migrations_django',
+    # 'djangocms_inherit': 'djangocms_inherit.migrations_django',
+    # 'djangocms_link': 'djangocms_link.migrations_django',
+    # 'djangocms_style': 'djangocms_style.migrations_django',
 }
 
 
@@ -247,8 +245,9 @@ if 'REDIS_BACKEND' in os.environ:
 {% if cookiecutter.site_email -%}
 DEFAULT_FROM_EMAIL = '{{ cookiecutter.site_email }}'
 {% endif -%}
-EMAIL_USE_TLS = env('EMAIL_USE_TLS', True)
-EMAIL_HOST = env('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = env('EMAIL_PORT', 587)
+EMAIL_HOST = env('EMAIL_HOST', 'mail')
+EMAIL_PORT = env('EMAIL_PORT', 25)
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS', False)
+

@@ -1,3 +1,6 @@
+.env
+.eyeglass_cache
+bower_components
+node_modules
 /public/static/*
 /public/media/*
-.sass-cache

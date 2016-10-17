@@ -1,0 +1,20 @@
+{
+  "name": "{{ cookiecutter.project_name }}",
+  "private": "true",
+  "dependencies": {
+    "jquery": "*",
+    {% if cookiecutter.foundation == 'yes' -%}
+    "foundation-sites": "*",
+    "motion-ui": "*",
+    "flexibility": "*",
+    {% endif -%}
+    "modernizr": "*"
+  }{% if cookiecutter.foundation == 'yes' %},
+  "overrides": {
+    "foundation-sites": {
+      "main": [
+        "dist/**"
+      ]
+    }
+  }{% endif %}
+}

@@ -35,7 +35,7 @@ Docker Compose!
     $ dc-run manage createsuperuser
 
     # Prod
-    $ dc-run manage collectstatic
+    $ dc-run uwsgi ./manage.py collectstatic
     $ dc-open
 
     # Dev

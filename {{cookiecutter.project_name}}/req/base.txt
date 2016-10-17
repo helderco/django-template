@@ -17,15 +17,6 @@ django-redis
 
 {%- if cookiecutter.django_cms == 'yes' %}
 
-# These dependencies are brought in by django CMS, but if you want to
-# lock-in their version, specify them
-django-treebeard
-django-sekizai
-django-classy-tags
-djangocms-admin-style
-html5lib==0.999
-six
-
 # Optional, recommended packages
 Pillow>=2
 django-filer

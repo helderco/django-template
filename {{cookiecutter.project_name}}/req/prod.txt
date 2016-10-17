@@ -1,3 +1,3 @@
--r base.txt
+-r base.lock.txt
 raven>=3
 django-dotenv

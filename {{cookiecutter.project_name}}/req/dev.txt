@@ -1,2 +1,2 @@
--r base.txt
+-r base.lock.txt
 django-debug-toolbar

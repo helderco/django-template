@@ -1,5 +1,9 @@
-// jQuery namespace
-(function($){
+/**
+ * Example
+ */
+(function($) {
+
+  'use strict';
 
   $(function() {
     // Document ready
