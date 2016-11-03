@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import os
 
@@ -8,7 +8,11 @@ import os
 with open('./.env', 'a') as f:
     import random
     import string
-    allowed_chars = string.digits + string.letters + string.punctuation
+    try:
+        letters = string.ascii_letters
+    except AttributeError:
+        letters = string.letters
+    allowed_chars = string.digits + letters + string.punctuation
     secret_key = ''.join([random.SystemRandom().choice(allowed_chars) for i in range(50)])
     print('SECRET_KEY=' + secret_key, file=f)
 

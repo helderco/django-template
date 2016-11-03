@@ -1,6 +1,6 @@
 {
     "project_name": "django",
-    "database_engine": "mysql",
+    "database_engine": ["mysql", "postgres"],
     "site_email": "",
     "foundation": "no",
     "django_cms": "no",
